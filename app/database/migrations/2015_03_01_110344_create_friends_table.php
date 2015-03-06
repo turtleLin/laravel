@@ -35,6 +35,9 @@ class CreateFriendsTable extends Migration {
                 ->references('id')->on('users') 
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+
+            $table
+            	->primary(array('user_id','friend_id'));
 		});
 	}
 
