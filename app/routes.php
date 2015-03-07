@@ -43,3 +43,18 @@ Route::group(array('prefix' => 'friend','before' => 'auth.user.isIn'),function()
 	Route::get('list','FriendController@getList');
 });
 
+Route::group(array('prefix' => 'like','before' => 'auth.user.isIn'),function()
+{
+	Route::post('create','LikeController@postCreate');
+	Route::post('delete','LikeController@postDelete');
+	Route::get('list','LikeController@getList');
+});
+
+Route::group(array('prefix' => 'comment','before' => 'auth.user.isIn'),function()
+{
+	Route::post('create','CommentController@postCreate');
+	Route::post('delete','CommentController@postDelete');
+	Route::get('read','CommentController@getRead');
+	Route::get('hasread','CommentController@getHasRead');
+});
+

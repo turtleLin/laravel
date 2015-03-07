@@ -37,15 +37,36 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		'activated'
 		);
 
-	protected $fillable = array('username', 'email', 'password', "gender","isadmin");
+	protected $fillable = array(
+		'username', 
+		'email',
+		'password',
+		"gender",
+		"isadmin"
+		);
 
 	public function messages()
 	{
 		return $this->hasMany('Message');
 	}
 
+	public function comments()
+	{
+		return $this->hasMany('Comment','receiver_id');
+	}
+
 	public function friends()
 	{
 		return $this->belongsToMany('User','friends','user_id','friend_id');
+	}
+
+	public function works()
+	{
+		return $this->hasMany('Work');
+	}
+
+	public function likes()
+	{
+		return $this->belongsToMany('Work','likes','user_id','work_id');
 	}
 }

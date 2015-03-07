@@ -22,7 +22,7 @@ class MessageController extends \BaseController {
 		$content = Input::get('content');
 		$receiver = Input::get('receiver');
 		$user = User::where('username',$receiver)->first();
-		if(isset($user))
+		if(!isset($user))
 		{
 			return Response::json(array('errCode' => 1,'message' => '发送的用户不存在！'));
 		}
@@ -44,16 +44,16 @@ class MessageController extends \BaseController {
 		}
 	}
 
-	public function getRead()
+	public function getRead() //读取消息列表
 	{
 		$user_id = Sentry::getUser()->id;
-		$messages = Message::where('user_id',$user_id)->orderby('create_at')->paginate(15)->toJson();
+		$messages = Message::where('user_id',$user_id)->orderBy('create_at')->paginate(15)->toJson();
 		$message = json_decode($message);
 
 		return Response::json(array('errCode' => 0,'msgList' => $message->data));
 	}
 
-	public function getHasRead()
+	public function getHasRead() //读一条消息
 	{
 		$user_id = Sentry::getUser()->id;
 		$id = Input::get('id');
@@ -65,6 +65,9 @@ class MessageController extends \BaseController {
 				$message->isread = true;
 				$message->save();
 			}
+		}else
+		{
+			return Response::json(array('errCode' => 1,'message' => '该消息不存在！'));
 		}
 	}
 }

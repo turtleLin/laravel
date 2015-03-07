@@ -60,8 +60,7 @@ class FriendController extends \BaseController {
 		$user = User::where('username',$username)->first();
 		if(isset($user))
 		{
-			$user_id = $user->id;
-			$friends = User::find($user_id)->friends()->paginate(15)->toJson();
+			$friends = $user->friends()->paginate(15)->toJson();
 			$friends = json_decode($friends);
 
 			return Response::json(array('errCode' => 0,'friends' => $friends->data));
