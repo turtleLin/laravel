@@ -19,6 +19,7 @@ class CreateResourcesTable extends Migration {
 			$table->integer('page');
 			$table->string('key');
 			$table->string('bucket')->default('rabbitpre');
+			$table->string('downurl');
 			$table->timestamps();
 
 			$table

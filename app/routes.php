@@ -58,3 +58,12 @@ Route::group(array('prefix' => 'comment','before' => 'auth.user.isIn'),function(
 	Route::get('hasread','CommentController@getHasRead');
 });
 
+Route::group(array('prefix' => 'rabbitpre','before' => 'auth.user.isIn'),function()
+{
+	Route::post('create','WorkController@postCreate');
+	Route::post('publish','WorkController@postPublish');
+	Route::get('list','WorkController@getList');
+	Route::post('delete','WorkController@postDelete');
+	Route::post('update','WorkController@postUpdate');
+});
+
