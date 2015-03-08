@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', 'FriendController@getList');
+Route::get('/', 'UserController@index');
 
 
 Route::group(array('prefix' => 'user','before' => 'auth.user.isOut'),function()

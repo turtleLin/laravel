@@ -10,7 +10,7 @@ class UserController extends \BaseController {
 
 	public function index()
 	{
-		$users = User::paginate(2)->toJson();
+		$users = User::with('messages')->paginate(2)->toJson();
 		$users = json_decode($users);
 		//return View::make('index',compact('users'));
 		return Response::json($users->data);
@@ -40,6 +40,13 @@ class UserController extends \BaseController {
 				));
 				if($user)
 				{
+					$message = new Message;
+					$message->title = '欢迎使用兔展!';
+					$message->content = '欢迎使用兔展!';
+					$message->sender = 'admin';
+					$message->receiver = $user->username;
+					$message->user_id = $user->id;
+					$message->save();
 					return Response::json(array('errCode' => 0,'message' => '注册成功！'));
 				}
 			}catch(\Exception $e)
