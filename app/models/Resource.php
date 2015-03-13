@@ -12,7 +12,9 @@ class Resource extends \Eloquent {
 		'create_at',
 		'id',
 		'updated_at',
-		'work_id'
+		'work_id',
+		'bucket',
+		'key'
 		);
 
 	public function work()

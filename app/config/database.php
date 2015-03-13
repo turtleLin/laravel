@@ -54,10 +54,10 @@ return array(
 
 		'mysql' => array(
 			'driver'    => 'mysql',
-			'host'      => 'localhost',
-			'database'  => 'rabbitpre_mobile',
-			'username'  => 'root',
-			'password'  => '',
+			'host'      => 'tuappdba.mysql.rds.aliyuncs.com:3306',
+			'database'  => 'tuappdba',
+			'username'  => 'tuappdbroot',
+			'password'  => 'zbmytech2014',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => 'rbpm_',

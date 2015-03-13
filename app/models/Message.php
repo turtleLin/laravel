@@ -6,8 +6,8 @@ class Message extends \Eloquent {
 		'content',
 		'sender',
 		'receiver',
-		'isread','
-		user_id'
+		'isread',
+		'user_id'
 		);
 
 	protected $hidden = array(

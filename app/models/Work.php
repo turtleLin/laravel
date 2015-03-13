@@ -22,4 +22,9 @@ class Work extends \Eloquent {
 	{
 		return $this->hasMany('Comment');
 	}
+
+	public function albums()
+	{
+		return $this->belongsToMany('albums');
+	}
 }

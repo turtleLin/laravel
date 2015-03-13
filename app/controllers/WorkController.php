@@ -29,10 +29,20 @@ class WorkController extends \BaseController {
 		}
 	}
 
+	public function getToken()
+	{
+		$bucket = 'rabbitpre';
+		Qiniu_SetKeys($this->accessKey, $this->secretKey);
+		$putPolicy = new Qiniu_RS_PutPolicy($bucket);
+		$upToken = $putPolicy->Token(null);
+
+		return Response::json(array('errCode' => 0,'token' => $upToken));
+	}
+
 	public function postPublish()
 	{
 		$work_id = Input::get('work_id');
-		$page = Input::get('page');
+		$resources = Input::get('resources');
 		$user = Sentry::getUser();
 		$work = Work::find($work_id);
 
@@ -46,42 +56,31 @@ class WorkController extends \BaseController {
 			return Response::json(array('errCode' => 1,'message' => '您没有权限！'));
 		}
 
-		$key = $user->username + '/' + $work->name + '/' + $page;
+		foreach ($resources as $res) {
+			$resource = new Resource;
+			$resource->work_id = $work_id;
+			$resource->page = $res->page;
+			$resource->key = $res->key;
+			$resource->downurl = $res->url;
 
-		$resource = new Resource;
-		$resource->work_id = $work_id;
-		$resource->page = $page;
-		$resource->key = $page;
-
-		Qiniu_SetKeys($accessKey, $secretKey);
-
-		$domain = 'rabbitpre.qiniudn.com';
-		$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key);
-		$getPolicy = new Qiniu_RS_GetPolicy();
-		$privateUrl = $getPolicy->MakeRequest($baseUrl, null);
-
-		$resource->downurl = $privateUrl;
-
-		if($resource->save())
-		{
-			$bucket = $resource->bucket;
-			
-			$putPolicy = new Qiniu_RS_PutPolicy($bucket);
-			$upToken = $putPolicy->Token(null);
-			$resource->token = $upToken;
-
-			return Response::json(array('errCode' => 0,'upload' => $resource->toJson()));
-		}else
-		{
-			return Response::json(array('errCode' => 2,'message' => '保存失败！'));
+			if(!$resource->save())
+			{
+				return Response::json(array('errCode' => 2,'message' => '保存失败！'));
+			}
 		}
+
+		return Response::json(array('errCode' => 0,'message' => '保存成功！'));
+
 	}
 
 	public function getList()
 	{
 		$user = Sentry::getUser();
 		$works = Work::where('user_id',$user->id)
-			->with('resources')
+			->with(array('resources' => function($query)
+			{
+				$query->orderBy('page');
+			}))
 			->paginate(15)
 			->get()
 			->toJson();
@@ -107,19 +106,6 @@ class WorkController extends \BaseController {
 			return Response::json(array('errCode' => 1,'message' => '您没有权限！'));
 		}
 
-		Qiniu_SetKeys($accessKey, $secretKey);
-		$client = new Qiniu_MacHttpClient(null);
-
-		$resources = $work->resources()->get();
-
-		foreach ($resources as $resource) {
-			$err = Qiniu_RS_Delete($client, $resource->bucket, $resource->key);
-			if($err !== null)
-			{
-				return Response::json(array('errCode' => 1,'message' => '删除失败！'));
-			}
-		}
-
 		if($work->delete())
 		{
 			return Response::json(array('errCode' => 0,'message' => '删除成功！'));
@@ -127,6 +113,18 @@ class WorkController extends \BaseController {
 		{
 			return Response::json(array('errCode' => 1,'message' => '删除失败！'));
 		}
+	}
+
+	public function getAlbum()
+	{
+		$albums = Album::all();
+		foreach($albums as $album)
+		{
+			$works = $album->works()->with('resources')->get();
+			$album->works = $works;
+		}
+
+		return Response::json(array('errCode' => 0,'albums' => $albums));
 	}
 
 	public function postUpdate()

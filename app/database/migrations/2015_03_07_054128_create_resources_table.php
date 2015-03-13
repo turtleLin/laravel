@@ -27,6 +27,9 @@ class CreateResourcesTable extends Migration {
 				->references('id')->on('works')
 				->onDelete('cascade')
 				->onUpdate('cascade');
+
+			$table
+				->unique(array('work_id','page'));
 		});
 	}
 

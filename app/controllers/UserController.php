@@ -10,10 +10,11 @@ class UserController extends \BaseController {
 
 	public function index()
 	{
-		$users = User::with('messages')->paginate(2)->toJson();
-		$users = json_decode($users);
+		$users = User::with('messages')->limit(1)->get();
+		//$users = User::with('messages')->paginate(2)->toJson();
+		//$users = json_decode($users);
 		//return View::make('index',compact('users'));
-		return Response::json($users->data);
+		return Response::json($users);
 	}
 
 	//注册

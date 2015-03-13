@@ -9,6 +9,8 @@ class FriendTableSeeder extends Seeder {
 	{
 		$faker = Faker::create();
 
+		DB::table('friends')->delete();
+
 		$arrays = array(
 			array(
 				"user_id" => 1,
