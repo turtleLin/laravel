@@ -24,6 +24,8 @@ class CreateLikesTable extends Migration {
         	 	->unsigned()
         	 	->index('work_id');
 
+    	 	$table->timestamps();
+
     	 	$table                          // 为cv_id建立外键
                 ->foreign('user_id')
                 ->references('id')->on('users') 

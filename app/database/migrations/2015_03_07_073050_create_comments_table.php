@@ -16,11 +16,8 @@ class CreateCommentsTable extends Migration {
 		{
 			$table->increments('id');
 			$table->text('content');
-			$table->string('sender');
-			$table->string('receiver');
-			$table->boolean('isread')->default(0);
+			$table->integer('sender_id')->unsigned()->index('sender_id');
 			$table->integer('work_id')->unsigned()->index('work_id');
-			$table->integer('receiver_id')->unsigned()->index('receiver_id');
 			$table->timestamps();
 
 			$table                         
@@ -30,7 +27,7 @@ class CreateCommentsTable extends Migration {
                 ->onUpdate('cascade');
 
             $table                         
-                ->foreign('receiver_id')
+                ->foreign('sender_id')
                 ->references('id')->on('users') 
                 ->onDelete('cascade')
                 ->onUpdate('cascade');

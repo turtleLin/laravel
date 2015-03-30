@@ -12,10 +12,10 @@ class CommentTableSeeder extends Seeder {
 		foreach(range(1, 10) as $index)
 		{
 			Comment::create([
-				'comment' => 'comment',
+				'content' => 'content',
 				'sender' => 'user_' . ($index + 1) % 10,
 				'receiver' => 'user_' . $index,
-				'work_id' => $index + 1,
+				'work_id' => $index,
 				'receiver_id' => $index
 			]);
 		}

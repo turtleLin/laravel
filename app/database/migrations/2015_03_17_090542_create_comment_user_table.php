@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateWorksTable extends Migration {
+class CreateCommentUserTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,13 +12,11 @@ class CreateWorksTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('works', function(Blueprint $table)
+		Schema::create('comment_user', function(Blueprint $table)
 		{
-			$table->increments('id');
-			$table->string('title');
-			$table->string('description');
-			$table->integer('hot')->default(0);
+			$table->integer('comment_id')->unsigned()->index('comment_id');
 			$table->integer('user_id')->unsigned()->index('user_id');
+			$table->boolean('isread')->default(0);
 			$table->timestamps();
 
 			$table                         
@@ -26,6 +24,15 @@ class CreateWorksTable extends Migration {
                 ->references('id')->on('users') 
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+
+            $table                         
+                ->foreign('comment_id')
+                ->references('id')->on('comments') 
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+            $table
+            	->primary(array('user_id','comment_id'));
 		});
 	}
 
@@ -36,7 +43,7 @@ class CreateWorksTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('works');
+		Schema::drop('comment_user');
 	}
 
 }

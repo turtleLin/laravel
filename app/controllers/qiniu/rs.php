@@ -13,7 +13,7 @@ class Qiniu_RS_GetPolicy
 	{
 		$deadline = $this->Expires;
 		if ($deadline == 0) {
-			$deadline = 3600;
+			$deadline = 315360000;
 		}
 		$deadline += time();
 

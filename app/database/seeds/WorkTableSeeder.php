@@ -9,10 +9,11 @@ class WorkTableSeeder extends Seeder {
 	{
 		$faker = Faker::create();
 
-		foreach(range(1, 10) as $index)
+		foreach(range(1, 50) as $index)
 		{
 			Work::create([
-				'name' => 'work_' . $index,
+				'title' => 'title_' . $index,
+				'description' => 'description_' . $index,
 				'user_id' => $index
 			]);
 		}

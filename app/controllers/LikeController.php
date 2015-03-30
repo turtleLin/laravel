@@ -17,6 +17,20 @@ class LikeController extends \BaseController {
 		{
 			if($work->likes()->attach($user_id))
 			{
+				$user = User::find($work->user_id);
+				$user->hot = $user->hot + 1;
+				$user->save();
+				$work->hot = $work->hot + 1;
+				$work->save();
+
+				$news = new News;
+				$news->work_id = $work_id;
+				$news->code = 1;
+				$news->sender_id = $user_id;
+				$news->user_id = $work->user_id;
+				$news->content = User::find($user_id)->username . '点赞了您的作品!';
+				$news->save();
+
 				return Response::json(array('errCode' => 0,'message' => '点赞成功！'));
 			}else
 			{
@@ -38,6 +52,19 @@ class LikeController extends \BaseController {
 		{
 			if($work->likes()->detach($user_id))
 			{
+				$user = User::find($work->user_id);
+				$user->hot = $user->hot - 1;
+				$user->save();
+				$work->hot = $work->hot - 1;
+				$work->save();
+
+				$news = new News;
+				$news->work_id = $work_id;
+				$news->code = 1;
+				$news->sender_id = $user_id;
+				$news->user_id = $work->user_id;
+				$news->content = User::find($user_id)->username . '取消点赞您的作品!';
+				$news->save();
 				return Response::json(array('errCode' => 0,'message' => '取消点赞成功！'));
 			}else
 			{

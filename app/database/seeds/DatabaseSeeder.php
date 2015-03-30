@@ -13,6 +13,13 @@ class DatabaseSeeder extends Seeder {
 
 		$this->call('UserTableSeeder');
 		$this->call('FriendTableSeeder');
+		$this->call('WorkTableSeeder');
+		$this->call('AlbumTableSeeder');
+		$this->call('MasterTableSeeder');
+		// $this->call('AlbumWorkTableSeeder');
+		// $this->call('CommentTableSeeder');
+		// $this->call('MessageTableSeeder');
+		// $this->call('LikeTableSeeder');
 	}
 
 }

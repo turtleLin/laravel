@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateResourcesTable extends Migration {
+class CreateSoundsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,24 +12,20 @@ class CreateResourcesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('resources', function(Blueprint $table)
+		Schema::create('sounds', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('work_id')->unsigned()->index('work_id');
-			$table->integer('page');
+			$table->string('url');
 			$table->string('key');
 			$table->string('bucket')->default('rabbitpremobile');
-			$table->string('downurl');
+			$table->integer('picture_id')->unsigned()->index('picture_id');
 			$table->timestamps();
 
 			$table
-				->foreign('work_id')
-				->references('id')->on('works')
+				->foreign('picture_id')
+				->references('id')->on('pictures')
 				->onDelete('cascade')
 				->onUpdate('cascade');
-
-			$table
-				->unique(array('work_id','page'));
 		});
 	}
 
@@ -40,7 +36,7 @@ class CreateResourcesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('resources');
+		Schema::drop('sounds');
 	}
 
 }

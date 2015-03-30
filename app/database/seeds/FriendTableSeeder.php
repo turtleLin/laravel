@@ -31,7 +31,15 @@ class FriendTableSeeder extends Seeder {
 			array(
 				"user_id" => 5,
 				"friend_id" => 3
-			)
+			),
+			array(
+				'user_id' => 1,
+				'friend_id' => 3
+			),
+			array(
+				'user_id' => 2,
+				'friend_id' => 3
+			),
 		);
 
 		foreach($arrays as $data)

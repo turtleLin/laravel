@@ -13,7 +13,7 @@ class LikeTableSeeder extends Seeder {
 		{
 			Like::create([
 				'user_id' => $index,
-				'work_id' => $index + 1
+				'work_id' => $index
 			]);
 		}
 	}

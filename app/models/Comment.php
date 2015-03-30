@@ -3,15 +3,12 @@
 class Comment extends \Eloquent {
 	protected $fillable = array(
 		'content',
-		'sender',
-		'receiver',
-		'isread',
+		'sender_id',
 		'work_id',
-		'receiver_id'
+		'id'
 		);
 
 	protected $hidden = array(
-		'created_at',
 		'updated_at'
 		);
 
@@ -22,6 +19,11 @@ class Comment extends \Eloquent {
 
 	public function user()
 	{
-		return $this->belongsTo('User');
+		return $this->belongsTo('User','sender_id');
+	}
+
+	public function users()
+	{
+		return $this->belongsToMany('User');
 	}
 }

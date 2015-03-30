@@ -10,30 +10,61 @@ class CommentController extends \BaseController {
 	 */
 	public function postCreate()
 	{
-		$sender = Sentry::getUser()->username;
+		$sender = Sentry::getUser();
 		$work_id = Input::get('work_id');
 		$content = Input::get('content');
 		$receiver = Input::get('receiver');
 
 		$user = User::where('username',$receiver)->first();
+		$work = Work::find($work_id);
 
 		if(!isset($user))
 		{
 			return Response::json(array('errCode' => 1,'message' => '发送的用户不存在！'));
 		}
 
-		$receiver_id = $user->id;
+		if(!isset($work))
+		{
+			return Response::json(array('errCode' => 1,'message' => '该作品不存在！'));
+		}
 
 		$comment = new Comment;
 		$comment->content = $content;
-		$comment->sender = $sender;
-		$comment->receiver = $receiver;
+		$comment->sender_id = $sender->id;
 		$comment->work_id = $work_id;
-		$comment->receiver_id = $receiver_id;
 
 		if($comment->save())
 		{
-			return Response::json(array('errCode' => 0,'message' => $comment->toJson()));
+			$owner = User::find($work->user_id);
+			if($work->user_id != $user->id)
+			{
+				$owner->comments()->save($comment);
+
+				$news = new News;
+				$news->work_id = $work_id;
+				$news->sender_id = $sender->id;
+				$news->user_id = $user->id;
+				$news->code = 1;
+				$news->content = $sender->username . '回复了您!';
+				$news->save();
+			}
+
+			$user->comments()->save($comment);
+
+			$owner->hot++;
+			$owner->save();
+			$work->hot++;
+			$work->save();
+
+			$news = new News;
+			$news->work_id = $work_id;
+			$news->sender_id = $sender->id;
+			$news->user_id = $work->user_id;
+			$news->code = 1;
+			$news->content = $sender->username . '评论了您!';
+			$news->save();
+
+			return Response::json(array('errCode' => 0,'message' => '评论成功!'));
 		}else
 		{
 			return Response::json(array('errCode' => 1,'message' => '评论失败！'));
@@ -51,13 +82,22 @@ class CommentController extends \BaseController {
 			return Response::json(array('errCode' => 1,'message' => '该评论不存在！'));
 		}
 
-		if($comment->sender != $user->username && $comment->receiver_id != $user->id)
+		$work = Work::find($comment->work_id);
+
+		if($comment->sender_id != $user->id && $work->user_id != $user->id)
 		{
 			return Response::json(array('errCode' => 1,'message' => '您没有权限操作！'));
 		}
 
-		if(comment->delete())
+		$user = User::find($work->user_id);
+
+		if($comment->delete())
 		{
+			$user->hot = $user->hot - 1;
+			$user->save();
+			$work->hot = $work->hot - 1;
+			$work->save();
+
 			return Response::json(array('errCode' => 0,'message' => '删除成功！'));
 		}else
 		{
@@ -73,27 +113,29 @@ class CommentController extends \BaseController {
 		{
 			return Response::json(array('errCode' => 1,'message' => '该作品不存在！'));
 		}
-		$comments = $work->comments()->paginate(15)->toJson();
-		$comments = json_decode($comments);
+		$comments = $work->comments()->with('user','users')->paginate(15)->toJson();
+		$comments = json_decode($comments)->data;
 
-		return Response::json(array('errCode' => 0,'comments' => $friends->data));
+		return Response::json(array('errCode' => 0,'comments' => $comments));
 	}
 
 	public function getHasRead() //读一条评论
 	{
 		$user_id = Sentry::getUser()->id;
-		$id = Input::get('commentId');
-		$comment = Comment::find($id);
-		if(isset($comment))
+		$comment_id = Input::get('commentId');
+		$comment_user = Comment_user::where('comment_id',$comment_id)->where('user_id',$user_id)->first();
+		if(isset($comment_user))
 		{
-			if($message->receiver_id == $user_id)
+			$comment_user->isread = 1;
+			if($comment_user->save())
 			{
-				$message->isread = true;
-				$message->save();
+				return Response::json(array('errCode' => 0,'message' => '查看成功！'));
+			}else{
+				return Response::json(array('errCode' => 1,'message' => '查看失败！'));
 			}
 		}else
 		{
-			return Response::json(array('errCode' => 1,'message' => '该评论不存在！'));
+			return Response::json(array('errCode' => 1,'message' => '非法操作！'));
 		}
 	}
 }

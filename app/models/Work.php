@@ -1,7 +1,8 @@
 <?php
 
 class Work extends \Eloquent {
-	protected $fillable = array('name','user_id');
+	protected $fillable = array('title','description','user_id','hot','scorenum');
+	protected $hidden = array('updated_at');
 
 	public function user()
 	{
@@ -13,6 +14,16 @@ class Work extends \Eloquent {
 		return $this->hasMany('Resource');
 	}
 
+	public function pictures()
+	{
+		return $this->hasMany('Picture');
+	}
+
+	public function sounds()
+	{
+		return $this->hasManyThrough('Sound','Picture');
+	}
+	//返回点赞用户
 	public function likes()
 	{
 		return $this->belongsToMany('User','likes','work_id','user_id');
@@ -25,6 +36,16 @@ class Work extends \Eloquent {
 
 	public function albums()
 	{
-		return $this->belongsToMany('albums');
+		return $this->belongsToMany('Album');
+	}
+
+	public function scores()
+	{
+		return $this->hasMany('Score');
+	}
+	//返回likes列表
+	public function like()
+	{
+		return $this->hasMany('Like');
 	}
 }

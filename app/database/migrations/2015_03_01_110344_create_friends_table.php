@@ -23,6 +23,8 @@ class CreateFriendsTable extends Migration {
             	->integer("friend_id")		 	// 好友id
             	->unsigned()   
             	->index("friend_id");
+        	$table->boolean('mutual')->default(0);
+        	$table->timestamps();
 
             $table                          // 为cv_id建立外键
                 ->foreign('user_id')

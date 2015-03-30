@@ -13,7 +13,7 @@ class AlbumWorkTableSeeder extends Seeder {
 		{
 			Album_work::create([
 				'album_id' => $index,
-				'work_id' => $index + 1
+				'work_id' => $index
 			]);
 		}
 	}

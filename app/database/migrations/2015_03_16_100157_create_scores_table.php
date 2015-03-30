@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateWorksTable extends Migration {
+class CreateScoresTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,13 +12,12 @@ class CreateWorksTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('works', function(Blueprint $table)
+		Schema::create('scores', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('title');
-			$table->string('description');
-			$table->integer('hot')->default(0);
+			$table->integer('work_id')->unsigned()->index('work_id');
 			$table->integer('user_id')->unsigned()->index('user_id');
+			$table->integer('score');
 			$table->timestamps();
 
 			$table                         
@@ -26,6 +25,15 @@ class CreateWorksTable extends Migration {
                 ->references('id')->on('users') 
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+
+            $table                         
+                ->foreign('work_id')
+                ->references('id')->on('works') 
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+            $table
+            	->unique(array('user_id','work_id'));
 		});
 	}
 
@@ -36,7 +44,7 @@ class CreateWorksTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('works');
+		Schema::drop('scores');
 	}
 
 }

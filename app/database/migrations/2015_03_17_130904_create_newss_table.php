@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateWorksTable extends Migration {
+class CreateNewssTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,13 +12,15 @@ class CreateWorksTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('works', function(Blueprint $table)
+		Schema::create('newss', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('title');
-			$table->string('description');
-			$table->integer('hot')->default(0);
+			$table->string('content');
+			$table->integer('work_id')->nullable();
+			$table->integer('sender_id');
 			$table->integer('user_id')->unsigned()->index('user_id');
+			$table->boolean('code');
+			$table->boolean('isread')->default(0);
 			$table->timestamps();
 
 			$table                         
@@ -36,7 +38,7 @@ class CreateWorksTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('works');
+		Schema::drop('newss');
 	}
 
 }

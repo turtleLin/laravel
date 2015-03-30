@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAlbumWorkTable extends Migration {
+class CreateMasterWorkTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,34 +12,34 @@ class CreateAlbumWorkTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('album_work', function(Blueprint $table)
+		Schema::create('master_work', function(Blueprint $table)
 		{
 			$table
-            	->integer("album_id")		 	
+            	->integer("master_id")		 	
             	->unsigned()   
-            	->index("album_id");
+            	->index("master_id");
 
             $table
-            	->integer("work_id")		 	
+            	->integer("user_id")		 	
             	->unsigned()   
-            	->index("work_id");
+            	->index("user_id");
 
         	$table->timestamps();
 
             $table                          
-                ->foreign('album_id')
-                ->references('id')->on('albums') 
+                ->foreign('master_id')
+                ->references('id')->on('masters') 
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
             $table                          
-                ->foreign('work_id')
-                ->references('id')->on('works') 
+                ->foreign('user_id')
+                ->references('id')->on('users') 
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
             $table
-            	->primary(array('album_id','work_id'));
+            	->primary(array('master_id','user_id'));
 		});
 	}
 
@@ -50,7 +50,7 @@ class CreateAlbumWorkTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('album_work');
+		Schema::drop('master_work');
 	}
 
 }

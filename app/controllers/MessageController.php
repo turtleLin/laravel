@@ -47,8 +47,8 @@ class MessageController extends \BaseController {
 	public function getRead() //读取消息列表
 	{
 		$user_id = Sentry::getUser()->id;
-		$messages = Message::where('user_id',$user_id)->orderBy('create_at')->paginate(15)->toJson();
-		$message = json_decode($message);
+		$messages = Message::where('user_id',$user_id)->orderBy('isread')->orderBy('id','desc')->paginate(15)->toJson();
+		$message = json_decode($messages);
 
 		return Response::json(array('errCode' => 0,'msgList' => $message->data));
 	}

@@ -32,7 +32,7 @@ class AlbumTableSeeder extends Seeder {
 					),
 				array(
 						'name' => '世界的另一面'
-					),
+					)
 			);
 
 		foreach($arrays as $data)

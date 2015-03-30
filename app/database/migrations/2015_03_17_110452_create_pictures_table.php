@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateResourcesTable extends Migration {
+class CreatePicturesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,14 +12,14 @@ class CreateResourcesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('resources', function(Blueprint $table)
+		Schema::create('pictures', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('work_id')->unsigned()->index('work_id');
-			$table->integer('page');
+			$table->string('url');
 			$table->string('key');
+			$table->integer('page');
 			$table->string('bucket')->default('rabbitpremobile');
-			$table->string('downurl');
+			$table->integer('work_id')->unsigned()->index('work_id');
 			$table->timestamps();
 
 			$table
@@ -40,7 +40,7 @@ class CreateResourcesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('resources');
+		Schema::drop('pictures');
 	}
 
 }

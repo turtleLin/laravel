@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateWorksTable extends Migration {
+class CreateTokensTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,12 +12,10 @@ class CreateWorksTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('works', function(Blueprint $table)
+		Schema::create('tokens', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('title');
-			$table->string('description');
-			$table->integer('hot')->default(0);
+			$table->string('tokens');
 			$table->integer('user_id')->unsigned()->index('user_id');
 			$table->timestamps();
 
@@ -36,7 +34,7 @@ class CreateWorksTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('works');
+		Schema::drop('tokens');
 	}
 
 }
