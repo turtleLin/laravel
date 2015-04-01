@@ -336,7 +336,7 @@ class UserController extends \BaseController {
 			Token::where('user_id',$user->id)->delete();
 			$user = Sentry::findUserById($user->id);
 			$resetCode = $user->getResetPasswordCode();
-			if($user->attemptResetPassword($resetCode, $newPwd))
+			if($user->attemptResetPassword($resetCode, $password))
 			{
 				return Response::json(array('errCode' => 0,'message' => '修改成功!'));
 			}
