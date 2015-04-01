@@ -1,7 +1,7 @@
 <?php
 
 class Token extends \Eloquent {
-	protected $fillable = ['token','user_id'];
+	protected $fillable = ['tokens','user_id'];
 
 	public function user()
 	{

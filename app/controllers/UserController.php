@@ -287,7 +287,7 @@ class UserController extends \BaseController {
 
 		$token = new Token;
 		$token->user_id = $user->id;
-		$token->token = $salt;
+		$token->tokens = $salt;
 		if($token->save())
 		{
 			Mail::send('test',array('token' => $salt),function($message)
