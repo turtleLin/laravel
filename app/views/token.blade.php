@@ -5,6 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
   </head>
 <body>
-  <div>您的验证码是:{{$value}}</div>
+  <div>您的验证码是:{{$token}}</div>
 </body>
 </html>
