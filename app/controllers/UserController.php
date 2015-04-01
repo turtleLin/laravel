@@ -19,6 +19,21 @@ class UserController extends \BaseController {
 		return Response::json($work);
 	}
 
+	public function sendEmail()
+	{
+		$possible_charactors = "abcdefghijklmnopqrstuvwxyz0123456789"; //产生随机数的字符串
+		$salt  =  ""; 
+		while(strlen($salt) < 6) 
+		{ 
+		 	 $salt .= substr($possible_charactors,rand(0,strlen($possible_charactors)-1),1); 
+		}
+
+		Mail::send('token',array('token' => $salt),function($message)
+				{
+					$message->to('930030895@qq.com','')->subject('兔展移动端验证码!');
+				});
+	}
+
 	//注册
 	public function postCreate()
 	{
@@ -316,7 +331,7 @@ class UserController extends \BaseController {
 
 		$to = $user->tokens()->orderBy('id','desc')->first();
 
-		if($to->token == $token)
+		if($to->tokens == $token)
 		{
 			Token::where('user_id',$user->id)->delete();
 			$user = Sentry::findUserById($user->id);

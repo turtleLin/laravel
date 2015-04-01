@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'UserController@index');
+Route::get('sendemail','UserController@sendEmail');
 
 
 Route::group(array('prefix' => 'user'),function()
