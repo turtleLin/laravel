@@ -290,7 +290,7 @@ class UserController extends \BaseController {
 		$token->tokens = $salt;
 		if($token->save())
 		{
-			Mail::send('test',array('token' => $salt),function($message) use ($email)
+			Mail::send('token',array('token' => $salt),function($message) use ($email)
 				{
 					$message->to($email,'')->subject('兔展移动端验证码!');
 				});
