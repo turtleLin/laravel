@@ -1,0 +1,13 @@
+{{Form::open(array('url'=>'user/change-password'))}}
+	<p>
+		{{Form::label('oldPwd:')}}
+		{{Form::text('oldPwd')}}
+	</p>
+	<p>
+		{{Form::label('newPwd:')}}
+		{{Form::text('newPwd')}}
+	</p>
+	<p>
+		{{Form::submit('submit')}}
+	</p>
+{{Form::close()}}

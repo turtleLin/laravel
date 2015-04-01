@@ -14,7 +14,7 @@ class UserController extends \BaseController {
 	public function index()
 	{
 		
-		$work = Work::with('user.id')->find(50);
+		$work = Work::with('user')->find(50);
 
 		return Response::json($work);
 	}
@@ -178,8 +178,8 @@ class UserController extends \BaseController {
 			$newPwd = Input::get('newPwd');
 			if($user->checkPassword($oldPwd))
 			{
-				$user->password = $newPwd;
-				if($user->save())
+				$resetCode = $user->getResetPasswordCode();
+				if($user->attemptResetPassword($resetCode, $newPwd))
 				{
 					return Response::json(array('errCode' => 0,'message' => '更新成功！'));
 				}else
@@ -313,8 +313,10 @@ class UserController extends \BaseController {
 
 		if($to->token == $token)
 		{
-			$user->password = $password;
-			if($user->save())
+			Token::where('user_id',$user->id)->delete();
+			$user = Sentry::findUserById($user->id);
+			$resetCode = $user->getResetPasswordCode();
+			if($user->attemptResetPassword($resetCode, $newPwd))
 			{
 				return Response::json(array('errCode' => 0,'message' => '修改成功!'));
 			}

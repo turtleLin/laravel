@@ -21,6 +21,8 @@ Route::group(array('prefix' => 'user'),function()
 	Route::post('create','UserController@postCreate');
 	Route::get('login','UserController@getLogin');
 	Route::get('create','UserController@getCreate');
+	Route::get('forgetpassword','UserController@getForgetPassword');
+	Route::get('checktoken','UserController@getCheckToken');
 });
 
 Route::group(array('prefix' => 'user','before' => 'auth.user.isIn'),function()
@@ -49,7 +51,7 @@ Route::group(array('prefix' => 'news','before' => 'auth.user.isIn'),function()
 
 Route::group(array('prefix' => 'friend','before' => 'auth.user.isIn'),function()
 {
-	Route::get('create','FriendController@postCreate');
+	Route::post('create','FriendController@postCreate');
 	Route::post('delete','FriendController@postDelete');
 	Route::get('list','FriendController@getAttentionList');
 	Route::get('fans','FriendController@getFans');
