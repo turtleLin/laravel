@@ -333,11 +333,11 @@ class UserController extends \BaseController {
 
 		if($to->tokens == $token)
 		{
-			Token::where('user_id',$user->id)->delete();
 			$user = Sentry::findUserById($user->id);
 			$resetCode = $user->getResetPasswordCode();
 			if($user->attemptResetPassword($resetCode, $password))
 			{
+				Token::where('user_id',$user->id)->delete();
 				return Response::json(array('errCode' => 0,'message' => '修改成功!'));
 			}
 			return Response::json(array('errCode' => 1,'message' => '修改失败!'));
