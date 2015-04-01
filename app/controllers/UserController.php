@@ -113,6 +113,11 @@ class UserController extends \BaseController {
 		return View::make('register');
 	}
 
+	public function getChange()
+	{
+		return View::make('change');
+	}
+
 	//登陆
 	public function getLogin()
 	{

@@ -54,7 +54,7 @@ return array(
 
 		'mysql' => array(
 			'driver'    => 'mysql',
-			'host'      => 'tuappdba.mysql.rds.aliyuncs.com:3306',
+			'host'      => 'tuappdba.mysql.rds.aliyuncs.com',
 			'database'  => 'tuappdba',
 			'username'  => 'tuappdbroot',
 			'password'  => 'zbmytech2014',

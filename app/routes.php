@@ -33,6 +33,7 @@ Route::group(array('prefix' => 'user','before' => 'auth.user.isIn'),function()
 	Route::post('delete','UserController@postDelete');
 	Route::get('master','UserController@getMaster');
 	Route::get('user','UserController@getUser');
+	Route::get('change','UserController@getChange');
 });
 
 Route::group(array('prefix' => 'message','before' => 'auth.user.isIn'),function()
