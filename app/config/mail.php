@@ -54,7 +54,7 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => 'rabbitpre_mobile@163.com', 'name' => 'rabbitpre_mobile'),
+	'from' => array('address' => '13660543593@163.com', 'name' => 'rabbitpre_mobile'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return array(
 	|
 	*/
 
-	'username' => 'rabbitpre_mobile@163.com',
+	'username' => '13660543593@163.com',
 
 	/*
 	|--------------------------------------------------------------------------
